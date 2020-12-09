@@ -86,6 +86,11 @@ if($isDSVM -eq "Yes")
 Write-Host 
 ("Installing SQLServer Power Shell Module or Updating to latest")
 
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+Install-PackageProvider -Name NuGet -Force
+
+Register-PSRepository -Default
+Install-Module -Name PowerShellGet -Force
 
 if (Get-Module -ListAvailable -Name SQLServer) 
     {Update-Module -Name "SQLServer" -MaximumVersion 21.0.17199}
@@ -103,7 +108,7 @@ Else
 ##########################################################################
 
 
-$clone = "git clone --branch $Branch --single-branch https://github.com/Microsoft/$SolutionFullName $solutionPath"
+$clone = "git clone --branch $Branch --single-branch https://github.com/jamescarpinter/$SolutionFullName $solutionPath"
 
 if (Test-Path $SolutionPath) 
 {Write-Host 
